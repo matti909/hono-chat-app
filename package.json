@@ -1,0 +1,19 @@
+{
+  "name": "chat-app",
+  "type": "module",
+  "scripts": {
+    "dev": "bun run --hot src/index.ts"
+  },
+  "dependencies": {
+    "hono": "^4.6.20"
+  },
+  "devDependencies": {
+    "@eslint/js": "^9.19.0",
+    "@hono/eslint-config": "^1.0.2",
+    "@hono/zod-validator": "^0.4.2",
+    "@types/bun": "latest",
+    "eslint-config-prettier": "^10.0.1",
+    "eslint-plugin-prettier": "^5.2.3",
+    "zod": "^3.24.2"
+  }
+}
