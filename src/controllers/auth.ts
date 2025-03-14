@@ -5,6 +5,7 @@ import { z } from "zod";
 import type { ContextVariables } from "../constants";
 import type { DBCreateUser, DBUser, Email } from "../models/db";
 import type { IDatabaseResource } from "../storage/types";
+import { zValidator } from "@hono/zod-validator";
 
 const registerSchema = z.object({
   email: z
