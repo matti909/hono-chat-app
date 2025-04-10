@@ -1,19 +1,16 @@
 import { Hono } from "hono";
+import { PrismaClient } from "@prisma/client";
 import { showRoutes } from "hono/dev";
 import { logger } from "hono/logger";
 import { timing } from "hono/timing";
 import type { ContextVariables } from "../constants";
 import { API_PREFIX } from "../constants";
 import { attachUserId, checkJWTAuth } from "../middlewares/auth";
-import type {
-  DBChat,
-  DBCreateChat,
-  DBCreateMessage,
-  DBCreateUser,
-  DBMessage,
-  DBUser,
-} from "../models/db";
-import { SimpleInMemoryResource } from "../storage/inmemory";
+import {
+  ChatDBResource,
+  MessageDBResource,
+  UserDBResource,
+} from "../storage/orm";
 import { AUTH_PREFIX, createAuthApp } from "./auth";
 import { CHAT_PREFIX, createChatApp } from "./chat";
 import { cors } from "hono/cors";
@@ -21,7 +18,7 @@ import { rateLimitMiddleware } from "../middlewares/rateLimiting";
 
 export function createMainApp(
   authApp: Hono<ContextVariables>,
-  chatApp: Hono<ContextVariables>
+  chatApp: Hono<ContextVariables>,
 ) {
   const app = new Hono<ContextVariables>().basePath(API_PREFIX);
 
@@ -46,12 +43,11 @@ export function createMainApp(
   return app;
 }
 
-export function createInMemoryApp() {
+export function createORMApp() {
+  const prisma = new PrismaClient();
+  prisma.$connect();
   return createMainApp(
-    createAuthApp(new SimpleInMemoryResource<DBUser, DBCreateUser>()),
-    createChatApp(
-      new SimpleInMemoryResource<DBChat, DBCreateChat>(),
-      new SimpleInMemoryResource<DBMessage, DBCreateMessage>()
-    )
+    createAuthApp(new UserDBResource(prisma)),
+    createChatApp(new ChatDBResource(prisma), new MessageDBResource(prisma)),
   );
 }
