@@ -6,3 +6,13 @@ bun.*
 .env
 
 eslint.*
+
+prisma/migrations/*
+
+chat-client/node_modules/*
+
+chat-client/svelte.config*
+
+
+chat-client/pnpm-lock*
+chat-client/npmrc*

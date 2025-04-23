@@ -9,6 +9,7 @@ import type {
   DBMessage,
 } from "../models/db";
 import type { IDatabaseResource } from "../storage/types";
+import { generateMessageResponse } from "../integrations/generate_message";
 
 export const CHAT_PREFIX = "/chat/";
 const CHAT_ROUTE = "";
@@ -29,7 +30,7 @@ const messageSchema = z.object({
 
 export function createChatApp(
   chatResource: IDatabaseResource<DBChat, DBCreateChat>,
-  messageResource: IDatabaseResource<DBMessage, DBCreateMessage>
+  messageResource: IDatabaseResource<DBMessage, DBCreateMessage>,
 ) {
   const chatApp = new Hono<ContextVariables>();
 
@@ -70,16 +71,19 @@ export function createChatApp(
       const userMessage: DBCreateMessage = { message, chatId, type: "user" };
       await messageResource.create(userMessage);
 
+      const allMessage = await messageResource.findAll({ chatId });
+      const response = await generateMessageResponse(allMessage);
       const responseMessage: DBCreateMessage = {
-        message: "dummy response",
+        message: response,
         chatId,
-        type: "assistant",
+        type: "user",
       };
 
       const data = await messageResource.create(responseMessage);
-
-      return c.json({ data });
-    }
+      const res = { data };
+      c.get("cache").clearPath(c.req.path);
+      return c.json(res);
+    },
   );
   return chatApp;
 }
