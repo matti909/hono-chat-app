@@ -23,7 +23,7 @@ export function createMainApp(
   const app = new Hono<ContextVariables>().basePath(API_PREFIX);
 
   const corsOptions = {
-    origin: [Bun.env.CORS_ORIGIN as string],
+    origin: [(Bun.env.CORS_ORIGIN as string) || "*"],
     allowMethods: ["GET", "POST", "PUT", "PATCH", "DELETE"],
     allowHeaders: ["Content-Type", "Authorization"],
     maxAge: 86400,
