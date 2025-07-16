@@ -15,7 +15,7 @@ export interface DBChat extends DBEntity {
   name: string;
 }
 
-export type MessageType = "assistant" | "user";
+export type MessageType = "user" | "assistant" | "user";
 
 export interface DBMessage extends DBEntity {
   chatId: DBChat["id"];

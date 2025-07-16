@@ -2,8 +2,8 @@ import type { Context } from "hono";
 import type { ContextVariables } from "../constants";
 const requestCounts = new Map<string, { count: number; resetTime: number }>();
 
-const MAX_REQUESTS = 100;
-const WINDOW_SIZE_MS = 15 * 60 * 1000;
+const MAX_REQUESTS = 1900;
+const WINDOW_SIZE_MS = 100 * 60 * 3000;
 
 export const rateLimitMiddleware = async (
   c: Context<ContextVariables>,

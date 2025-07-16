@@ -5,13 +5,12 @@ export async function generateMessageResponse(
   messages: DBMessage[],
 ): Promise<string> {
   const params = {
-    model: "gpt-3.5-turbo-0125",
+    model: "gpt-4.1",
     temperature: 0,
     max_tokens: 1000,
     top_p: 1,
     n: 1,
     stream: false,
-    stop: "",
   };
 
   const data = {
