@@ -1,14 +1,15 @@
-export async function callGPTAPI(data: object) {
-  console.log("🔐 OPENAI_API_KEY:", Bun.env.OPENAI_API_KEY);
-  const res = await fetch("https://api.openai.com/v1/chat/completions", {
+export async function callClaudeAPI(data: object) {
+  console.log("🔐 ANTHROPIC_API_KEY:", Bun.env.ANTHROPIC_API_KEY);
+  const res = await fetch("https://api.anthropic.com/v1/messages", {
     method: "POST",
     body: JSON.stringify(data),
     headers: {
       "content-type": "application/json",
-      authorization: "Bearer " + Bun.env.OPENAI_API_KEY,
+      "x-api-key": Bun.env.ANTHROPIC_API_KEY || "",
+      "anthropic-version": "2023-06-01",
     },
   });
-  console.log("OpenAI request body:", JSON.stringify(data, null, 2));
+  console.log("Claude request body:", JSON.stringify(data, null, 2));
 
   return res;
 }

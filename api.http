@@ -1,0 +1,49 @@
+@baseUrl = http://localhost:3000/api/v1
+@token = {{login.response.body.token}}
+
+### Register user
+POST {{baseUrl}}/auth/register/
+Content-Type: application/json
+
+{
+  "email": "test@test.com",
+  "password": "test123",
+  "name": "Test User"
+}
+
+### Login
+# @name login
+POST {{baseUrl}}/auth/login/
+Content-Type: application/json
+
+{
+  "email": "test@test.com",
+  "password": "test123"
+}
+
+### Create chat
+# @name createChat
+POST {{baseUrl}}/chat/
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+{
+  "name": "Mi primer chat"
+}
+
+### Get all chats
+GET {{baseUrl}}/chat/
+Authorization: Bearer {{token}}
+
+### Send message to chat (test Claude API)
+POST {{baseUrl}}/chat/{{createChat.response.body.data.id}}/message/
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+{
+  "message": "Hola, como estas?"
+}
+
+### Get chat messages
+GET {{baseUrl}}/chat/{{createChat.response.body.data.id}}/message/
+Authorization: Bearer {{token}}

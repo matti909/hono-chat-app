@@ -1,13 +1,13 @@
 import { HTTPException } from "hono/http-exception";
-import { callGPTAPI } from "./api";
-import { validateGPTResponse } from "./validation";
+import { callClaudeAPI } from "./api";
+import { validateClaudeResponse } from "./validation";
 
-export async function getGPTAnswer(data: object) {
+export async function getClaudeAnswer(data: object) {
   try {
-    const response = await callGPTAPI(data);
-    const message = await validateGPTResponse(response);
+    const response = await callClaudeAPI(data);
+    const message = await validateClaudeResponse(response);
     return message;
   } catch {
-    throw new HTTPException(503, { message: "GPT integration is down" });
+    throw new HTTPException(503, { message: "Claude integration is down" });
   }
 }

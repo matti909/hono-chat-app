@@ -18,6 +18,7 @@ export async function checkJWTAuth(
     const { JWT_SECRET } = env<{ JWT_SECRET: string }>(c);
     const jwtMiddleware = jwt({
       secret: JWT_SECRET,
+      alg: "HS256",
     });
     return jwtMiddleware(c, next);
   }

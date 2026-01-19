@@ -1,27 +1,26 @@
 import { z } from "zod";
 
-const GPTResponseSchema = z.object({
-  choices: z.array(
+const ClaudeResponseSchema = z.object({
+  content: z.array(
     z.object({
-      message: z.object({
-        content: z.string(),
-      }),
+      type: z.string(),
+      text: z.string(),
     }),
   ),
 });
 
-export async function validateGPTResponse(response: Response): Promise<string> {
+export async function validateClaudeResponse(response: Response): Promise<string> {
   if (!response.ok) {
     const errorText = await response.text();
-    console.error("OpenAI error:", response.status, errorText);
-    throw new Error("Invalid response from OpenAI");
+    console.error("Claude error:", response.status, errorText);
+    throw new Error("Invalid response from Claude");
   }
 
   const responseData = await response.json();
 
   try {
-    const parsed = GPTResponseSchema.parse(responseData);
-    const content = parsed.choices[0].message.content.trim();
+    const parsed = ClaudeResponseSchema.parse(responseData);
+    const content = parsed.content[0].text.trim();
     return content;
   } catch (error) {
     throw new Error(`Invalid API response format: ${error}`);
