@@ -1,0 +1,43 @@
+# Dependencies
+node_modules
+
+# Git
+.git
+.gitignore
+
+# Environment files
+.env
+.env.*
+
+# IDE
+.vscode
+.idea
+
+# Logs
+*.log
+logs
+
+# Build artifacts
+dist
+build
+
+# Docker
+Dockerfile*
+docker-compose*.yml
+docker_compose*.yml
+.dockerignore
+
+# Prisma migrations (optional, remove if you need them in container)
+# prisma/migrations
+
+# Tests
+*.test.ts
+*.spec.ts
+__tests__
+
+# Misc
+README.md
+.eslintrc*
+eslint.config.*
+.prettierrc*
+tsconfig.json

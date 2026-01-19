@@ -10,6 +10,24 @@ services:
       - "5434:5432"
     volumes:
       - pgdata2:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U test -d test"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  backend:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    restart: always
+    ports:
+      - "3000:3000"
+    environment:
+      DATABASE_URL: postgresql://test:test@postgres:5432/test
+    depends_on:
+      postgres:
+        condition: service_healthy
 
 volumes:
   pgdata2:
