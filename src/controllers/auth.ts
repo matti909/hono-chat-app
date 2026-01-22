@@ -2,6 +2,7 @@ import { Hono } from "hono";
 import { env } from "hono/adapter";
 import { sign } from "hono/jwt";
 import { z } from "zod";
+import bcrypt from "bcryptjs";
 import type { ContextVariables } from "../constants";
 import type { DBCreateUser, DBUser, Email } from "../models/db";
 import type { IDatabaseResource } from "../storage/types";
@@ -45,9 +46,7 @@ export function createAuthApp(
       if (await userResource.find({ email })) {
         return c.json({ error: ERROR_USER_ALREADY_EXIST }, 400);
       }
-      const hashedPassword = await Bun.password.hash(password, {
-        algorithm: "bcrypt",
-      });
+      const hashedPassword = await bcrypt.hash(password, 10);
       await userResource.create({ name, email, password: hashedPassword });
       return c.json({ success: true });
     }
@@ -58,7 +57,7 @@ export function createAuthApp(
     const fulluser = await userResource.find({ email });
     if (
       !fulluser ||
-      !(await Bun.password.verify(password, fulluser.password))
+      !(await bcrypt.compare(password, fulluser.password))
     ) {
       return c.json({ error: ERROR_INVALID_CREDENTIALS }, 401);
     }

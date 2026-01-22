@@ -3,6 +3,7 @@ import { getClaudeAnswer } from "./gpt";
 
 export async function generateMessageResponse(
   messages: DBMessage[],
+  apiKey: string,
 ): Promise<string> {
   const data = {
     model: "claude-sonnet-4-5",
@@ -11,5 +12,5 @@ export async function generateMessageResponse(
     messages: messages.map((m) => ({ role: m.type, content: m.message })),
   };
 
-  return getClaudeAnswer(data);
+  return getClaudeAnswer(data, apiKey);
 }

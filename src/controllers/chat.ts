@@ -1,5 +1,6 @@
 import { zValidator } from "@hono/zod-validator";
 import { Hono } from "hono";
+import { env } from "hono/adapter";
 import { z } from "zod";
 import type { ContextVariables } from "../constants";
 import type {
@@ -72,7 +73,8 @@ export function createChatApp(
       await messageResource.create(userMessage);
 
       const allMessage = await messageResource.findAll({ chatId });
-      const response = await generateMessageResponse(allMessage);
+      const { ANTHROPIC_API_KEY } = env<{ ANTHROPIC_API_KEY: string }, typeof c>(c);
+      const response = await generateMessageResponse(allMessage, ANTHROPIC_API_KEY);
       const responseMessage: DBCreateMessage = {
         message: response,
         chatId,

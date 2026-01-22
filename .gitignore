@@ -16,3 +16,5 @@ chat-client/svelte.config*
 
 chat-client/pnpm-lock*
 chat-client/npmrc*
+pnpm-lock.yaml
+pnpm-workspace.yaml

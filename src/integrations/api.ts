@@ -1,11 +1,11 @@
-export async function callClaudeAPI(data: object) {
-  console.log("🔐 ANTHROPIC_API_KEY:", Bun.env.ANTHROPIC_API_KEY);
+export async function callClaudeAPI(data: object, apiKey: string) {
+  console.log("🔐 ANTHROPIC_API_KEY:", apiKey ? "***" : "missing");
   const res = await fetch("https://api.anthropic.com/v1/messages", {
     method: "POST",
     body: JSON.stringify(data),
     headers: {
       "content-type": "application/json",
-      "x-api-key": Bun.env.ANTHROPIC_API_KEY || "",
+      "x-api-key": apiKey,
       "anthropic-version": "2023-06-01",
     },
   });

@@ -1,16 +1,22 @@
-FROM oven/bun:1 AS base
+FROM oven/bun:1.2-debian
+
 WORKDIR /app
 
-# Install dependencies
-FROM base AS install
-COPY package.json bun.lock* ./
-RUN bun install --frozen-lockfile
+# Copy package files
+COPY package.json bun.lock ./
 
-# Copy source and generate prisma client
-FROM base AS release
-COPY --from=install /app/node_modules ./node_modules
+# Install production dependencies only
+RUN bun install --production
+
+# Copy source
 COPY . .
-RUN bunx prisma generate
+
+# Generate Prisma client
+RUN bunx prisma generate --schema=src/prisma/schema.prisma
+
+
+ENV NODE_ENV=production
 
 EXPOSE 3000
+
 CMD ["bun", "run", "src/index.ts"]

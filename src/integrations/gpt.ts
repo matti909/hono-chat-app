@@ -2,9 +2,9 @@ import { HTTPException } from "hono/http-exception";
 import { callClaudeAPI } from "./api";
 import { validateClaudeResponse } from "./validation";
 
-export async function getClaudeAnswer(data: object) {
+export async function getClaudeAnswer(data: object, apiKey: string) {
   try {
-    const response = await callClaudeAPI(data);
+    const response = await callClaudeAPI(data, apiKey);
     const message = await validateClaudeResponse(response);
     return message;
   } catch {

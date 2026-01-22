@@ -1,0 +1,17 @@
+{
+  "name": "hono-chat-app",
+  "main": "src/index.ts",
+  "compatibility_date": "2024-09-23",
+  "compatibility_flags": ["nodejs_compat"],
+  "workers_dev": true,
+  "d1_databases": [
+    {
+      "binding": "hono_chat_app",
+      "database_name": "hono-chat-app",
+      "database_id": "838e85bd-102f-4413-8ede-530c79bab3e6"
+    }
+  ],
+  "vars": {
+    "CORS_ORIGIN": "*"
+  }
+}
